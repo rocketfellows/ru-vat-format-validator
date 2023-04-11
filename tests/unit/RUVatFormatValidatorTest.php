@@ -30,8 +30,16 @@ class RUVatFormatValidatorTest extends TestCase
     {
         return [
             [
-                'vatNumber',
-                'isValid',
+                'vatNumber' => '1234567848',
+                'isValid' => true,
+            ],
+            [
+                'vatNumber' => '9857123563',
+                'isValid' => true,
+            ],
+            [
+                'vatNumber' => '1312211111',
+                'isValid' => true,
             ],
         ];
     }
