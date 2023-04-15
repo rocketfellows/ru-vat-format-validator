@@ -6,7 +6,7 @@ use rocketfellows\CountryVatFormatValidatorInterface\CountryVatFormatValidator;
 
 class RUVatFormatValidator extends CountryVatFormatValidator
 {
-    private const VAT_NUMBER_PATTERN = '/^((\d{12})|(\d{10}))?$/';
+    private const VAT_NUMBER_PATTERN = '/^(([0-9]{12})|([0-9]{10}))$/';
     private const ORGANIZATION_VAT_NUMBER_PATTERN = '/^((\d{10}))?$/';
     private const INDIVIDUAL_VAT_NUMBER_PATTERN = '/^((\d{12}))?$/';
 
@@ -20,11 +20,11 @@ class RUVatFormatValidator extends CountryVatFormatValidator
             return false;
         }
 
-        if (!$this->isValidOrganizationVatNumberFormat($vatNumber)) {
+        if ($this->isValidOrganizationVatNumberFormat($vatNumber)) {
             return $this->isValidOrganizationVatNumberChecksum($vatNumber);
         }
 
-        if (!$this->isValidIndividualVatNumberFormat($vatNumber)) {
+        if ($this->isValidIndividualVatNumberFormat($vatNumber)) {
             return $this->isValidIndividualVatNumberChecksum($vatNumber);
         }
 
