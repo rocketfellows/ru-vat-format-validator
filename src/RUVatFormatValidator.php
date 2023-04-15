@@ -11,6 +11,8 @@ class RUVatFormatValidator extends CountryVatFormatValidator
     private const INDIVIDUAL_VAT_NUMBER_PATTERN = '/^((\d{12}))?$/';
 
     private const ORGANIZATION_VAT_NUMBER_CHECKSUM_MULTIPLIERS = [2, 4, 10, 3, 5, 9, 4, 6, 8];
+    private const INDIVIDUAL_VAT_NUMBER_PENULTIMATE_DIGIT_CHECKSUM_MULTIPLIERS = [7, 2, 4, 10, 3, 5, 9, 4, 6, 8];
+    private const INDIVIDUAL_VAT_NUMBER_LAST_DIGIT_CHECKSUM_MULTIPLIERS = [3, 7, 2, 4, 10, 3, 5, 9, 4, 6, 8];
 
     protected function isValidFormat(string $vatNumber): bool
     {
@@ -23,7 +25,7 @@ class RUVatFormatValidator extends CountryVatFormatValidator
         }
 
         if (!$this->isValidIndividualVatNumberFormat($vatNumber)) {
-            return false;
+            return $this->isValidIndividualVatNumberChecksum($vatNumber);
         }
 
         return false;
@@ -60,6 +62,45 @@ class RUVatFormatValidator extends CountryVatFormatValidator
         $calculatedChecksum = $this->calculateChecksum($calculatedKey);
 
         return ($calculatedChecksum === end($vatNumberDigits));
+    }
+
+    private function isValidIndividualVatNumberChecksum(string $vatNumber): bool
+    {
+        $vatNumberDigits = $this->getVatNumberDigits($vatNumber);
+
+        if (!$this->isValidIndividualVatNumberPenultimateDigitChecksum($vatNumberDigits)) {
+            return false;
+        }
+
+        return $this->isValidIndividualVatNumberLastDigitChecksum($vatNumberDigits);
+    }
+
+    /**
+     * @param int[] $vatNumberDigits
+     * @return bool
+     */
+    private function isValidIndividualVatNumberPenultimateDigitChecksum(array $vatNumberDigits): bool
+    {
+        $vatNumberChecksumDigits = array_slice($vatNumberDigits, 0, 10);
+        $calculatedKey = $this->calculateKey(
+            $vatNumberChecksumDigits,
+            self::INDIVIDUAL_VAT_NUMBER_PENULTIMATE_DIGIT_CHECKSUM_MULTIPLIERS
+        );
+        $calculatedChecksum = $this->calculateChecksum($calculatedKey);
+
+        return ($calculatedChecksum === $vatNumberDigits[10]);
+    }
+
+    private function isValidIndividualVatNumberLastDigitChecksum(array $vatNumberDigits): bool
+    {
+        $vatNumberChecksumDigits = array_slice($vatNumberDigits, 0, 11);
+        $calculatedKey = $this->calculateKey(
+            $vatNumberChecksumDigits,
+            self::INDIVIDUAL_VAT_NUMBER_LAST_DIGIT_CHECKSUM_MULTIPLIERS
+        );
+        $calculatedChecksum = $this->calculateChecksum($calculatedKey);
+
+        return ($calculatedChecksum === $vatNumberDigits[11]);
     }
 
     /**
