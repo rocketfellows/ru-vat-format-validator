@@ -124,7 +124,8 @@ class RUVatFormatValidator extends CountryVatFormatValidator
                 static function (int $vatNumberDigit, int $vatNumberChecksumMultiplier) {
                     return $vatNumberDigit * $vatNumberChecksumMultiplier;
                 },
-                $vatNumberDigits, $vatNumberChecksumMultipliers
+                $vatNumberDigits,
+                $vatNumberChecksumMultipliers
             )
         );
     }
