@@ -109,6 +109,34 @@ class RUVatFormatValidatorTest extends TestCase
                 'vatNumber' => '164904132028',
                 'isValid' => false,
             ],
+            [
+                'vatNumber' => '1649041320280',
+                'isValid' => false,
+            ],
+            [
+                'vatNumber' => '16490413202',
+                'isValid' => false,
+            ],
+            [
+                'vatNumber' => '164904132',
+                'isValid' => false,
+            ],
+            [
+                'vatNumber' => 'RU1649041321',
+                'isValid' => false,
+            ],
+            [
+                'vatNumber' => 'RU164904132111',
+                'isValid' => false,
+            ],
+            [
+                'vatNumber' => '1',
+                'isValid' => false,
+            ],
+            [
+                'vatNumber' => '',
+                'isValid' => false,
+            ],
         ];
     }
 }
