@@ -53,14 +53,12 @@ class RUVatFormatValidator extends CountryVatFormatValidator
 
     private function isValidOrganizationVatNumberChecksum(string $vatNumber): bool
     {
-        $vatNumberDigits = $this->getVatNumberDigits($vatNumber);
-        $vatNumberChecksumDigits = array_slice($vatNumberDigits, 0, 9);
-        $calculatedChecksum = $this->calculateChecksumByKey(
-            $vatNumberChecksumDigits,
-            self::ORGANIZATION_VAT_NUMBER_CHECKSUM_MULTIPLIERS
+        return $this->isValidVatNumberChecksum(
+            $vatNumber,
+            self::ORGANIZATION_VAT_NUMBER_CHECKSUM_MULTIPLIERS,
+            9,
+            9
         );
-
-        return ($calculatedChecksum === end($vatNumberDigits));
     }
 
     private function isValidIndividualVatNumberChecksum(string $vatNumber): bool
@@ -98,6 +96,19 @@ class RUVatFormatValidator extends CountryVatFormatValidator
         );
 
         return ($calculatedChecksum === $vatNumberDigits[11]);
+    }
+
+    private function isValidVatNumberChecksum(
+        string $vatNumber,
+        array $vatNumberChecksumMultipliers,
+        int $toVatNumberDigitPosition,
+        int $checkingDigitPosition
+    ): bool {
+        $vatNumberDigits = $this->getVatNumberDigits($vatNumber);
+        $vatNumberChecksumDigits = array_slice($vatNumberDigits, 0, $toVatNumberDigitPosition);
+        $calculatedChecksum = $this->calculateChecksumByKey($vatNumberChecksumDigits, $vatNumberChecksumMultipliers);
+
+        return ($calculatedChecksum === $vatNumberDigits[$checkingDigitPosition]);
     }
 
     /**
