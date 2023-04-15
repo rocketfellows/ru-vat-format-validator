@@ -7,8 +7,8 @@ use rocketfellows\CountryVatFormatValidatorInterface\CountryVatFormatValidator;
 class RUVatFormatValidator extends CountryVatFormatValidator
 {
     private const VAT_NUMBER_PATTERN = '/^(([0-9]{12})|([0-9]{10}))$/';
-    private const ORGANIZATION_VAT_NUMBER_PATTERN = '/^((\d{10}))?$/';
-    private const INDIVIDUAL_VAT_NUMBER_PATTERN = '/^((\d{12}))?$/';
+    private const ORGANIZATION_VAT_NUMBER_PATTERN = '/^((\d{10}))$/';
+    private const INDIVIDUAL_VAT_NUMBER_PATTERN = '/^((\d{12}))$/';
 
     private const ORGANIZATION_VAT_NUMBER_CHECKSUM_MULTIPLIERS = [2, 4, 10, 3, 5, 9, 4, 6, 8];
     private const INDIVIDUAL_VAT_NUMBER_PENULTIMATE_DIGIT_CHECKSUM_MULTIPLIERS = [7, 2, 4, 10, 3, 5, 9, 4, 6, 8];
