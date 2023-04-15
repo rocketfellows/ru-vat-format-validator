@@ -63,39 +63,25 @@ class RUVatFormatValidator extends CountryVatFormatValidator
 
     private function isValidIndividualVatNumberChecksum(string $vatNumber): bool
     {
-        $vatNumberDigits = $this->getVatNumberDigits($vatNumber);
+        $isValidIndividualVatNumberPenultimateDigitChecksum = $this->isValidVatNumberChecksum(
+            $vatNumber,
+            self::INDIVIDUAL_VAT_NUMBER_PENULTIMATE_DIGIT_CHECKSUM_MULTIPLIERS,
+            10,
+            10
+        );
 
-        if (!$this->isValidIndividualVatNumberPenultimateDigitChecksum($vatNumberDigits)) {
+        if (!$isValidIndividualVatNumberPenultimateDigitChecksum) {
             return false;
         }
 
-        return $this->isValidIndividualVatNumberLastDigitChecksum($vatNumberDigits);
-    }
-
-    /**
-     * @param int[] $vatNumberDigits
-     * @return bool
-     */
-    private function isValidIndividualVatNumberPenultimateDigitChecksum(array $vatNumberDigits): bool
-    {
-        $vatNumberChecksumDigits = array_slice($vatNumberDigits, 0, 10);
-        $calculatedChecksum = $this->calculateChecksumByKey(
-            $vatNumberChecksumDigits,
-            self::INDIVIDUAL_VAT_NUMBER_PENULTIMATE_DIGIT_CHECKSUM_MULTIPLIERS
+        $isValidIndividualVatNumberLastDigitChecksum = $this->isValidVatNumberChecksum(
+            $vatNumber,
+            self::INDIVIDUAL_VAT_NUMBER_LAST_DIGIT_CHECKSUM_MULTIPLIERS,
+            11,
+            11
         );
 
-        return ($calculatedChecksum === $vatNumberDigits[10]);
-    }
-
-    private function isValidIndividualVatNumberLastDigitChecksum(array $vatNumberDigits): bool
-    {
-        $vatNumberChecksumDigits = array_slice($vatNumberDigits, 0, 11);
-        $calculatedChecksum = $this->calculateChecksumByKey(
-            $vatNumberChecksumDigits,
-            self::INDIVIDUAL_VAT_NUMBER_LAST_DIGIT_CHECKSUM_MULTIPLIERS
-        );
-
-        return ($calculatedChecksum === $vatNumberDigits[11]);
+        return $isValidIndividualVatNumberLastDigitChecksum;
     }
 
     private function isValidVatNumberChecksum(
