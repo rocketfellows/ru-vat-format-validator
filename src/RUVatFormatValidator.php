@@ -63,22 +63,19 @@ class RUVatFormatValidator extends CountryVatFormatValidator
 
     private function isValidIndividualVatNumberChecksum(string $vatNumber): bool
     {
-        $isValidIndividualVatNumberPenultimateDigitChecksum = $this->isValidVatNumberChecksum(
-            $vatNumber,
-            self::INDIVIDUAL_VAT_NUMBER_PENULTIMATE_DIGIT_CHECKSUM_MULTIPLIERS,
-            10,
-            10
-        );
-
-        if (!$isValidIndividualVatNumberPenultimateDigitChecksum) {
-            return false;
-        }
-
-        return $this->isValidVatNumberChecksum(
-            $vatNumber,
-            self::INDIVIDUAL_VAT_NUMBER_LAST_DIGIT_CHECKSUM_MULTIPLIERS,
-            11,
-            11
+        return (
+            $this->isValidVatNumberChecksum(
+                $vatNumber,
+                self::INDIVIDUAL_VAT_NUMBER_PENULTIMATE_DIGIT_CHECKSUM_MULTIPLIERS,
+                10,
+                10
+            ) &&
+            $this->isValidVatNumberChecksum(
+                $vatNumber,
+                self::INDIVIDUAL_VAT_NUMBER_LAST_DIGIT_CHECKSUM_MULTIPLIERS,
+                11,
+                11
+            )
         );
     }
 
