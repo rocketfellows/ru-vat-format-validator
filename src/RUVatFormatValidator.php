@@ -20,15 +20,28 @@ class RUVatFormatValidator extends CountryVatFormatValidator
             return false;
         }
 
-        if ($this->isValidOrganizationVatNumberFormat($vatNumber)) {
-            return $this->isValidOrganizationVatNumberChecksum($vatNumber);
+        return (
+            $this->isValidOrganizationVatNumber($vatNumber) ||
+            $this->isValidIndividualVatNumber($vatNumber)
+        );
+    }
+
+    private function isValidOrganizationVatNumber(string $vatNumber): bool
+    {
+        if (!$this->isValidOrganizationVatNumberFormat($vatNumber)) {
+            return false;
         }
 
-        if ($this->isValidIndividualVatNumberFormat($vatNumber)) {
-            return $this->isValidIndividualVatNumberChecksum($vatNumber);
+        return $this->isValidOrganizationVatNumberChecksum($vatNumber);
+    }
+
+    private function isValidIndividualVatNumber($vatNumber): bool
+    {
+        if (!$this->isValidIndividualVatNumberFormat($vatNumber)) {
+            return false;
         }
 
-        return false;
+        return $this->isValidIndividualVatNumberChecksum($vatNumber);
     }
 
     private function isValidFormatByGeneralPattern(string $vatNumber): bool
