@@ -1,33 +1,8 @@
-# Country vat format validator template description
-
-## Implementation steps
-
-1. Create repository use template for name: <ISO-3166-standard-alpha2-code>-vat-format-validator
-2. Update composer.json **name** attribute: rocketfellows/<ISO-3166-standard-alpha2-code>-vat-format-validator
-3. Update composer.json with autoload and autoload-dev sections by pattern:
-```php
-   "autoload": {
-        "psr-4": {
-            "rocketfellows\\<ISO-3166-standard-alpha2-code>VatFormatValidator\\": "src/"
-        }
-   },
-   "autoload-dev": {
-        "psr-4": {
-            "rocketfellows\\<ISO-3166-standard-alpha2-code>VatFormatValidator\\tests\\": "tests/"
-        }
-   }
-```
-3. Run docker-deploy.sh
-4. Implement unit test in test/unit directory
-5. Implement direct validator
-
-# Templated readme
-
-# <Country> vat format validator
+# Russian Federation vat format validator
 
 ![Code Coverage Badge](./badge.svg)
 
-This component provides <Country> vat number format validator.
+This component provides Russian Federation vat number format validator.
 
 Implementation of interface **rocketfellows\CountryVatFormatValidatorInterface\CountryVatFormatValidatorInterface**
 
@@ -36,17 +11,17 @@ Depends on https://github.com/rocketfellows/country-vat-format-validator-interfa
 ## Installation
 
 ```shell
-composer require rocketfellows/<ISO-3166-standard-alpha2-code>-vat-format-validator
+composer require rocketfellows/ru-vat-format-validator
 ```
 
 ## Usage example
 
-Valid <Country> vat number:
+Valid Russian Federation vat number:
 
 ```php
-$validator = new <Country>VatFormatValidator();
-$validator->isValid('');
-$validator->isValid('');
+$validator = new RUVatFormatValidator();
+$validator->isValid('1234567848');
+$validator->isValid('770970230389');
 ```
 
 Returns:
@@ -56,15 +31,27 @@ true
 true
 ```
 
-Invalid <Country> vat number:
+Invalid Russian Federation vat number:
 
 ```php
-$validator = new <Country>VatFormatValidator();
-$validator->isValid('');
+$validator = new RUVatFormatValidator();
+$validator->isValid('1234567841');
+$validator->isValid('770970230381');
+$validator->isValid('RU1649041321');
+$validator->isValid('RU164904132111');
+$validator->isValid('1649041320280');
+$validator->isValid('16490413202');
+$validator->isValid('164904132');
 $validator->isValid('');
 ```
 
 ```shell
+false
+false
+false
+false
+false
+false
 false
 false
 ```
@@ -74,4 +61,3 @@ false
 Welcome to pull requests. If there is a major changes, first please open an issue for discussion.
 
 Please make sure to update tests as appropriate.
-
